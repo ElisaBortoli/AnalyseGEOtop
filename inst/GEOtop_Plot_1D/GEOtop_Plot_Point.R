@@ -29,14 +29,15 @@ if(!require("dygraphs"))
 library(geotopbricks)
 library(data.table)
 # read data from folder wpath
-source("C:/Users/CBrida/Desktop/Git/AnalyseGEOtop/inst/GEOtop_Plot_1D/GEOtop_ReadPointData_Generalized.R")
-wpath <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"
+source("GEOtop_ReadPointData_Generalized.R")
+#wpath <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"
+wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Kaltern_veg/Kaltern_veg_004"
 
 # sim data
 if (file.exists(file.path(wpath,"PointOut.RData"))) {
   load(file.path(wpath,"PointOut.RData"))
 } else {
-  out <- GEOtop_ReadPointData_BrC(wpath = wpath, save_rData = F,soil = F)
+  out <- GEOtop_ReadPointData_Generalized(wpath = wpath, save_rData = F,soil = F)
 }
 
 # +++++ select inputs
