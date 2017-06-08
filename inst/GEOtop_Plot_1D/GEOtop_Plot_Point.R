@@ -1,13 +1,13 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------------
-# File Title:   extract_Analyse GEOtop point simualtion.R
-# TITLE:        test on script Analyse GEOtop point simualtion.Rmd 
-#               available in https://github.com/EURAC-Ecohydro/AnalyseGEOtop/tree/master/inst/Rmd
-# Autor:        Christian Brida  
+# File Title:   GEOtop_Plot_Point.R
+# Description:  Plot using dygraph different variables of a single point  
+#               Other interactive scripts are available in https://github.com/EURAC-Ecohydro/AnalyseGEOtop/tree/master/inst/Rmd
+# Autor:        Christian Brida, based  on scripts developed by Johannes Brenner (https://github.com/JBrenn)
 #               Institute for Alpine Environment
 # Data:         06/06/2017
-# Version:      1.0
 #------------------------------------------------------------------------------------------------------------------------------------------------------
 
+#- Install and import packages and functions ----------------------------------------------------------------------------------------------------------
 
 if(!require("AnalyseGeotop"))
 {
@@ -26,57 +26,71 @@ if(!require("dygraphs"))
   require("dygraphs")
 }
 
-library(geotopbricks)
-library(data.table)
-# read data from folder wpath
-source("GEOtop_ReadPointData_Generalized.R")
-#wpath <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"
-wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Kaltern_veg/Kaltern_veg_004"
+if(!require("geotopbricks"))
+{
+  install.packages(geotopbricks)
+  require("geotopbricks")
+}
 
-# sim data
+if(!require("data.table"))
+{
+  install.packages(data.table)
+  require("data.table")
+}
+
+source("GEOtop_ReadPointData_Generalized.R") # this function is available in folder AnalyseGEOtop/ins/GEOtop_Plot_1D
+
+#- Read "tabs/point" files of simulations -----------------------------------------------------------------------------------------------------------------
+
+# Select simulation folder (wpath <- ...):
+wpath <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"     
+# wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Kaltern_veg/Kaltern_veg_004"
+
+
+# Import data
 if (file.exists(file.path(wpath,"PointOut.RData"))) {
   load(file.path(wpath,"PointOut.RData"))
 } else {
-  out <- GEOtop_ReadPointData_Generalized(wpath = wpath, save_rData = F,soil = F)
+  out <- GEOtop_ReadPointData_Generalized(wpath,soil_parameters = F,save_rData = T)
 }
 
-# +++++ select inputs
-choises_point=as.numeric(length(out))
-point=1                                 # see geotop.inpts  -> POINT SETTINGS  to explore the point position
+# Import points coordinates
+
+xpoints <- get.geotop.inpts.keyword.value("CoordinatePointX",wpath=wpath,numeric=T)
+ypoints <- get.geotop.inpts.keyword.value("CoordinatePointY",wpath=wpath,numeric=T)
+
+n_points_available <- as.numeric(length(xpoints))
+
+#- Select inputs ------------------------------------------------------------------------------------------------------------------------------------------
+
+# Select the sigle point to plot
+cat(paste("Number of point available:",n_points_available))
+point=1                                                            # <-- Select the point here ( value = 1, ... , n_point_available) 
+
+# Select the sigle point to plot
 choices = names(out[[point]])
-choices
-input_variable1 = "snow_depth.mm."          #   <-- put here one of variables that you can show runnung the row before
-input_variable2 = "snow_water_equivalent.mm." 
-input_variable3 = "snow_density.kg.m3."
-input_variable4 = "snow_temperature.C."  
-input_variable5 = "n.a."
-input_fromabove = "normal"              # choices = c("normal","from above")
-# +++++ plot time series
+paste("Variable:",choices)
+
+cat(paste("Advice: to plot maximum 5 variables on the same graph!"))
+input_variables=c("snow_depth.mm.",                                  # <-- Select variables here ( value = 1, ... , n_point_available)                       
+                  "snow_water_equivalent.mm.",
+                  "snow_water_equivalent.mm." ,
+                  "snow_density.kg.m3.",
+                  "snow_temperature.C.")
+
+#- Plot variable for single point -------------------------------------------------------------------------------------------------------------------------
+
 out_new <- out[[point]]
-forplot <- c(input_variable1, input_variable2, input_variable3, input_variable4, input_variable5)
-forplot <- forplot[forplot != "n.a."]
+forplot <- input_variables
 
-data <- out_new[,forplot] 
+mydata <- out_new[,forplot] 
 
-if (input_variable5 == "n.a.") {
-  
-  dygraph(data) %>%
-    dyRangeSelector() %>%
-    dyRoller()
-  
-} else {
-  
-  if (input_fromabove == "from above") {
-    data[,input_variable5] <- data[,input_variable5] * (-1)
-    dygraph(data) %>%
-      dyRangeSelector() %>%
-      dyRoller() %>%
-      dySeries(name = input_variable5, axis = "y2", stepPlot = TRUE, fillGraph = TRUE)
-  } else {
-    dygraph(data) %>%
-      dyRangeSelector() %>%
-      dyRoller()
-  }
-  
-  
-}
+dygraph(mydata) %>%
+  dyRangeSelector() %>%
+  dyRoller()
+
+
+
+
+
+

@@ -10,9 +10,9 @@
 #  
 #  obs   <- list(hour=B2_h, day=B2_d)
 
-GEOtop_ReadPointData_BrC <- function(wpath, 
-                                     soil_output_files=c("SoilLiqContentProfileFile","SoilIceContentProfileFile", "SoilLiqWaterPressProfileFile", "SoilAveragedTempProfileFile"), 
-                                     soil=FALSE,soil_files=TRUE, save_rData=TRUE)
+GEOtop_ReadPointData_Generalized <- function(wpath, soil_parameters=FALSE,
+                                             soil_output_files=c("SoilLiqContentProfileFile","SoilIceContentProfileFile", "SoilLiqWaterPressProfileFile", "SoilAveragedTempProfileFile"), 
+                                             soil_files=TRUE, save_rData=TRUE)
 {
   
   
@@ -73,7 +73,7 @@ GEOtop_ReadPointData_BrC <- function(wpath,
     
     
     
-    if(soil==TRUE){
+    if(soil_parameters==TRUE){
       # get available keywords
       keywords <- declared.geotop.inpts.keywords(wpath = wpath)$Keyword
       
@@ -138,6 +138,8 @@ GEOtop_ReadPointData_BrC <- function(wpath,
     # zoo object
     out[[i]] <- zoo(out_df[,-c(1:5)], time(point_data))  
   }
+  # out_data=list(out,length(xpoints))
+  
   # save or not    
   if(save_rData) save(list = "out", file = file.path(wpath,"PointOut.RData"))
   return(out)
