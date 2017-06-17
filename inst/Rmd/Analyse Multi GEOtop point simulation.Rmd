@@ -67,6 +67,9 @@ if(!require("hydroGOF"))
 #   require(ggplot2)
 # }
 
+# to load since it is not installed as a package
+source("C:/Users/GBertoldi/Documents/Git/EURAC-Ecohydro/AnalyseGEOtop/inst/GEOtop_Plot_1D/GEOtop_ReadPointData_Generalized.R")
+
 #wpath <- "/run/user/1000/gvfs/smb-share:server=sdcalp01.eurac.edu,share=data2/Simulations/Simulation_GEOtop_1_225_ZH/Vinschgau/SimTraining/BrJ/HiResAlp/1D/Montecini_pnt_1_225_B2_007/"
 #wpath <- "/run/user/1000/gvfs/smb-share:server=sdcalp01.eurac.edu,share=data2/Simulations/Simulation_GEOtop_1_225_ZH/Vinschgau/SimTraining/BrJ/MonaLisa/1D/Kaltern/sim006"
 
@@ -75,10 +78,10 @@ if(!require("hydroGOF"))
 # wpath3 <- NULL
 # wpath4 <- NULL
 
-wpath1  <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"
-wpath2  <-  NULL
-wpath3  <-  NULL
-wpath4  <-  NULL
+wpath1  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v001/"
+wpath2  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v002/"
+wpath3  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v003/"
+wpath4  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v004/"
 
 # sim data
 
@@ -88,7 +91,8 @@ wpath4  <-  NULL
       #rm(out)
   } else {
     
-    out1 <- GEOtop_ReadPointData(wpath = wpath1, save_rData = T)
+   # out1 <- GEOtop_ReadPointData(wpath = wpath1, save_rData = T)
+    out1 <- GEOtop_ReadPointData_Generalized(wpath = wpath1, save_rData = T)
   }
 
     if (file.exists(file.path(wpath2,"PointOut.RData"))) {
@@ -96,7 +100,8 @@ wpath4  <-  NULL
       out2 <- out
       #rm(out)
   } else {
-    out2 <- GEOtop_ReadPointData(wpath = wpath2, save_rData = T)
+    #out2 <- GEOtop_ReadPointData(wpath = wpath2, save_rData = T)
+    out2 <- GEOtop_ReadPointData_Generalized(wpath = wpath2, save_rData = T)
   }
   
   if (is.null(wpath3)) {
@@ -107,7 +112,8 @@ wpath4  <-  NULL
         out3 <- out
         #rm(out)
       } else {
-        out3 <- GEOtop_ReadPointData(wpath = wpath3, save_rData = T)
+        #out3 <- GEOtop_ReadPointData(wpath = wpath3, save_rData = T)
+        out3 <- GEOtop_ReadPointData_Generalized(wpath = wpath3, save_rData = T)
       }
   }
 
@@ -119,7 +125,8 @@ wpath4  <-  NULL
         out4 <- out
         #rm(out)
       } else {
-        out4 <- GEOtop_ReadPointData(wpath = wpath4, save_rData = T)
+       # out4 <- GEOtop_ReadPointData(wpath = wpath4, save_rData = T)
+        out4 <- GEOtop_ReadPointData_Generalized(wpath = wpath4, save_rData = T)
       }
   }
 

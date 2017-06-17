@@ -11,7 +11,7 @@
 #------------------------------------------------------------------------
 # Specify working path where are simulations data
 #wpath <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"
-wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v003"
+wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v017"
 
 #------------------------------------------------------------------------
 # Load libraries
@@ -70,6 +70,7 @@ discharge_data <- get.geotop.inpts.keyword.value(keyword="DischargeFile", wpath=
 # basin_data_avg_mm
 # basin_data_avg_yy
 # basin_data_avg_tt
+
 # 
 # basin_data_cc_dd
 # basin_data_cc_mm

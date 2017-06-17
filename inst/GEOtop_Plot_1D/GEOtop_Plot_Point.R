@@ -7,6 +7,12 @@
 # Data:         06/06/2017
 #------------------------------------------------------------------------------------------------------------------------------------------------------
 
+# Select simulation folder (wpath <- ...):
+# wpath <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"     
+# wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Kaltern_veg/Kaltern_veg_004"
+wpath  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v021/"
+
+
 #- Install and import packages and functions ----------------------------------------------------------------------------------------------------------
 
 if(!require("AnalyseGeotop"))
@@ -38,21 +44,19 @@ if(!require("data.table"))
   require("data.table")
 }
 
-source("GEOtop_ReadPointData_Generalized.R") # this function is available in folder AnalyseGEOtop/ins/GEOtop_Plot_1D
+
+source("../../R/GEOtop_ReadPointData_Generalized.R") # this function is available in folder AnalyseGEOtop/ins/GEOtop_Plot_1D
 
 #- Read "tabs/point" files of simulations -----------------------------------------------------------------------------------------------------------------
 
-# Select simulation folder (wpath <- ...):
-wpath <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"     
-# wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Kaltern_veg/Kaltern_veg_004"
-
 
 # Import data
-if (file.exists(file.path(wpath,"PointOut.RData"))) {
-  load(file.path(wpath,"PointOut.RData"))
-} else {
-  out <- GEOtop_ReadPointData_Generalized(wpath,soil_parameters = F,save_rData = T)
-}
+# to add here a user confirmation if you load existing data
+#if (file.exists(file.path(wpath,"PointOut.RData"))) {
+#  load(file.path(wpath,"PointOut.RData"))
+#} else {
+  out <- GEOtop_ReadPointData_Generalized(wpath,soil_info = F,save_rData = F)
+#}
 
 # Import points coordinates
 
@@ -64,26 +68,24 @@ n_points_available <- as.numeric(length(xpoints))
 #- Select inputs ------------------------------------------------------------------------------------------------------------------------------------------
 
 # Select the sigle point to plot
-cat(paste("Number of point available:",n_points_available))
-point=1                                                            # <-- Select the point here ( value = 1, ... , n_point_available) 
+# to add here an interactive choiche
+cat(paste("Number of points available:",n_points_available))
+point=1 # <-- Select the point here ( value = 1, ... , n_point_available) 
+out_new <- out[[point]] 
 
-# Select the sigle point to plot
+# List the variable to plot
 choices = names(out[[point]])
-paste("Variable:",choices)
+paste("Variables:",choices)
 
+#- Plot variables for single point -------------------------------------------------------------------------------------------------------------------------
 cat(paste("Advice: to plot maximum 5 variables on the same graph!"))
+
+# --------------------------------------------------
+# Snow plot
 input_variables=c("snow_depth.mm.",                                  # <-- Select variables here ( value = 1, ... , n_point_available)                       
-                  "snow_water_equivalent.mm.",
-                  "snow_water_equivalent.mm." ,
-                  "snow_density.kg.m3.",
-                  "snow_temperature.C.")
-
-#- Plot variable for single point -------------------------------------------------------------------------------------------------------------------------
-
-out_new <- out[[point]]
-forplot <- input_variables
-
-mydata <- out_new[,forplot] 
+                  "Psnow_over_canopy.mm.",
+                  "Prain_over_canopy.mm.")
+mydata <- out_new[,input_variables] 
 
 dygraph(mydata) %>%
   dyRangeSelector() %>%

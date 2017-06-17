@@ -1,18 +1,18 @@
-# Function to load GEOtop point simulation output based on observations
+# Function to load GEOtop point simulation output
+#
+# Developed by J. Brenner
+# improved by C. Brida and G. Bertoldi
+# added compatibility with multiple point output and no soil files 
 
-#  wpath <- "/run/user/1000/gvfs/smb-share:server=sdcalp01.eurac.edu,share=data2/Simulations/Simulation_GEOtop_1_225_ZH/Vinschgau/SimTraining/BrJ/HiResAlp/1D/Montecini_pnt_1_225_B2_007/"
-#  wpath <- "/run/user/1000/gvfs/smb-share:server=sdcalp01.eurac.edu,share=data2/Simulations/Simulation_GEOtop_1_225_ZH/Vinschgau/SimTraining/BrJ/MonaLisa/1D/Kaltern/sim006"
-#  data("observations_B2")
-#  
-#  load(file.path(wpath, "obs", "observation.RData"))
-#  names(observation) <- c("hour", "day")
-#  obs <- observation
-#  
-#  obs   <- list(hour=B2_h, day=B2_d)
+# needed until is not placed in a R package
+library(geotopbricks)
 
-GEOtop_ReadPointData_Generalized <- function(wpath, soil_parameters=FALSE,
+GEOtop_ReadPointData_Generalized <- function(wpath, 
+											 soil_info=TRUE,
+											 soil_files=TRUE,
                                              soil_output_files=c("SoilLiqContentProfileFile","SoilIceContentProfileFile", "SoilLiqWaterPressProfileFile", "SoilAveragedTempProfileFile"), 
-                                             soil_files=TRUE, save_rData=TRUE)
+											 snow_info=FALSE,
+											 save_rData=TRUE)
 {
   
   
@@ -72,10 +72,10 @@ GEOtop_ReadPointData_Generalized <- function(wpath, soil_parameters=FALSE,
       dplyr::mutate(Energy_budget_storage_W.m2. = Net_radiation_W.m2. - Latent_heat_flux_over_canopy_W.m2. - Sensible_heat_flux_over_canopy_W.m2. - Soil_heat_flux.W.m2.) 
     
     
+	# get available keywords
+    keywords <- declared.geotop.inpts.keywords(wpath = wpath)$Keyword
     
-    if(soil_parameters==TRUE){
-      # get available keywords
-      keywords <- declared.geotop.inpts.keywords(wpath = wpath)$Keyword
+    if(soil_info==TRUE){
       
       # get soil information
       if (soil_files) {
