@@ -15,7 +15,7 @@ First install the package with:
 ```R
 install.packages("devtools")
 library(devtools)
-install_github("JBrenn/AnalyseGEOtop")
+install_github("EURAC-Ecohydro/AnalyseGEOtop")
 ```
 
 and then import the library with:
