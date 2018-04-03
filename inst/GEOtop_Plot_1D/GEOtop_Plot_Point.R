@@ -14,6 +14,7 @@
 
 wpath  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Montacini_elisa/1D/Matsch_P2_Ref_001"
 #wpath  <-  "C:/Users/GBertoldi/OneDrive - Scientific Network South Tyrol/Simulations/Johannes/1D/B2_P2_Giacomo/B2_BeG_012S"
+wpath  <- "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/1D/CRYOMON_sim_1D_204_v002"
 
 
 #- Install and import packages and functions ----------------------------------------------------------------------------------------------------------
@@ -87,7 +88,6 @@ choices = names(out[[point]])
 paste("Variables:",choices)
 
 #- Plot variables for single point -------------------------------------------------------------------------------------------------------------------------
-cat(paste("Advice: to plot maximum 5 variables on the same graph!"))
 
 # --------------------------------------------------
 # Snow plot
@@ -101,10 +101,10 @@ dygraph(mydata) %>%
   dyRoller()
 
 # --------------------------------------------------
-# Et partioning plot
-input_variables=c("snow_depth.mm.",                                  # <-- Select variables here ( value = 1, ... , n_point_available)                       
-                  "Psnow_over_canopy.mm.",
-                  "Prain_over_canopy.mm.")
+# Et partitioning plot
+input_variables=c("Evap_surface.mm.",                                  # <-- Select variables here ( value = 1, ... , n_point_available)                       
+                  "Trasp_canopy.mm.",
+                  "Evapotranspiration.mm.")
 mydata <- out_new[,input_variables] 
 
 dygraph(mydata) %>%

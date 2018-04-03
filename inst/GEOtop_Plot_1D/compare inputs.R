@@ -41,12 +41,14 @@ Sys.setenv(TZ='Etc/GMT-1')# sets the environment on italy´s time zone
 # --- Function to import inputs data ---
 input_by_variables=function(wpath){
   
-  files=dir(paste(wpath,"meteo/",sep=""),pattern = "meteo")
+  meteofile_roots=get.geotop.inpts.keyword.value("MeteoFile",wpath=wpath)
+  meteofolder=strsplit(meteofile_roots, "/")[[1]][1]
+  files=dir(paste(wpath,"/",meteofolder,"/",sep=""),pattern = "meteo")
   files=files[-grep("old",files)]
   
   #--- FIRST LOOP--------------
   # reading all input meteo data, skipping .old files
-  meteo=read.table(paste(wpath,"meteo/",files[1],sep=""),sep = ",",stringsAsFactors = F)
+  meteo=read.table(paste(wpath,"/",meteofolder,"/",files[1],sep=""),sep = ",",stringsAsFactors = F)
   colnames(meteo)=meteo[1,]
   meteo=meteo[-1,]
   for(j in 2:ncol(meteo)){
@@ -82,7 +84,7 @@ input_by_variables=function(wpath){
   #--- OTHER LOOPS--------------
   
   for(i in files[-1]){
-    meteo=read.table(paste(wpath,"meteo/",i,sep=""),sep = ",",stringsAsFactors = F)
+    meteo=read.table(paste(wpath,"/",meteofolder,"/",i,sep=""),sep = ",",stringsAsFactors = F)
     colnames(meteo)=meteo[1,]
     meteo=meteo[-1,]
     for(j in 2:ncol(meteo)){
@@ -133,15 +135,16 @@ input_by_variables=function(wpath){
 
 #------------------------------------------------------------------------
 # Specify working path where are simulations data
+# run the fucntion input_by_variables to import input data in R 
+
 #wpath <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"
+#wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v008/"
 
-
-
-wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v008/"
+wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/1D/CRYOMON_sim_1D_204_v002"
 all_inputs=input_by_variables(wpath)
-save(all_inputs,file="C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim008.Rdata")
+save(all_inputs,file="C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim_1D_204_v002.Rdata")
 
-wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v009/"
+wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/3D/CRYOMON_sim_157_v009/"
 all_inputs=input_by_variables(wpath = wpath)
 save(all_inputs,file="C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim009.Rdata")
 
@@ -155,13 +158,16 @@ sim_0008=all_inputs
 load("C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim009.Rdata")
 sim_0009=all_inputs
 
+load("C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim_1D_204_v002.Rdata")
+sim_1D_002=all_inputs
+
 #=====================================================================================================
 
 # --- Aggregate and plot inputs ---
 
 # Select simulations to aggregate and plot
 
-simulation=sim_0008
+simulation=sim_1D_002
 simulation2=sim_0009
 
 mycolors=c("red", "blue","yellow", "green", "orange","violet","lime","grey","black","pink","gold")
