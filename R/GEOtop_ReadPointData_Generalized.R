@@ -10,7 +10,7 @@ library(geotopbricks)
 GEOtop_ReadPointData_Generalized <- function(wpath, 
 											 soil_info=TRUE,
 											 soil_files=TRUE,
-                                             soil_output_files=c("SoilLiqContentProfileFile","SoilIceContentProfileFile", "SoilLiqWaterPressProfileFile", "SoilAveragedTempProfileFile"), 
+                       soil_output_files=c("SoilLiqContentProfileFile","SoilIceContentProfileFile", "SoilLiqWaterPressProfileFile", "SoilAveragedTempProfileFile"), 
 											 snow_info=FALSE,
 											 save_rData=TRUE)
 {

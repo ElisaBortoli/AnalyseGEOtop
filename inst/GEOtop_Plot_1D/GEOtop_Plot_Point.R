@@ -10,7 +10,10 @@
 # Select simulation folder (wpath <- ...):
 # wpath <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"     
 # wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Kaltern_veg/Kaltern_veg_004"
-wpath  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v021/"
+# wpath  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v021/"
+
+wpath  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Montacini_elisa/1D/Matsch_P2_Ref_001"
+#wpath  <-  "C:/Users/GBertoldi/OneDrive - Scientific Network South Tyrol/Simulations/Johannes/1D/B2_P2_Giacomo/B2_BeG_012S"
 
 
 #- Install and import packages and functions ----------------------------------------------------------------------------------------------------------
@@ -19,39 +22,45 @@ if(!require("AnalyseGeotop"))
 {
   if(!require("devtools"))
   {
-    install.packages(devtools)
+    install.packages("devtools")
     require("devtools")
   }
-  install_github("AnalyseGeotop", "JBrenn")
+  install_github("AnalyseGeotop", "EURAC-Ecohydro")
   require("AnalyseGeotop")
 }
 
 if(!require("dygraphs"))
 {
-  install.packages(dygraphs)
+  install.packages("dygraphs")
   require("dygraphs")
 }
 
 if(!require("geotopbricks"))
 {
-  install.packages(geotopbricks)
+  install.packages("geotopbricks")
   require("geotopbricks")
 }
 
 if(!require("data.table"))
 {
-  install.packages(data.table)
+  install.packages("data.table")
   require("data.table")
 }
 
-
+# Loads functions (until this is not in an R package)
 source("../../R/GEOtop_ReadPointData_Generalized.R") # this function is available in folder AnalyseGEOtop/ins/GEOtop_Plot_1D
 
+
 #- Read "tabs/point" files of simulations -----------------------------------------------------------------------------------------------------------------
+
+# get available keywords
+keywords <- declared.geotop.inpts.keywords(wpath = wpath)$Keyword
 
 
 # Import data
 # to add here a user confirmation if you load existing data
+# it does not work any more in the more complete case of soil_info = T
+
 #if (file.exists(file.path(wpath,"PointOut.RData"))) {
 #  load(file.path(wpath,"PointOut.RData"))
 #} else {
@@ -82,6 +91,17 @@ cat(paste("Advice: to plot maximum 5 variables on the same graph!"))
 
 # --------------------------------------------------
 # Snow plot
+input_variables=c("snow_depth.mm.",                                  # <-- Select variables here ( value = 1, ... , n_point_available)                       
+                  "Psnow_over_canopy.mm.",
+                  "Prain_over_canopy.mm.")
+mydata <- out_new[,input_variables] 
+
+dygraph(mydata) %>%
+  dyRangeSelector() %>%
+  dyRoller()
+
+# --------------------------------------------------
+# Et partioning plot
 input_variables=c("snow_depth.mm.",                                  # <-- Select variables here ( value = 1, ... , n_point_available)                       
                   "Psnow_over_canopy.mm.",
                   "Prain_over_canopy.mm.")
