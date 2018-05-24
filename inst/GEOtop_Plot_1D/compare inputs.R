@@ -44,7 +44,7 @@ input_by_variables=function(wpath){
   meteofile_roots=get.geotop.inpts.keyword.value("MeteoFile",wpath=wpath)
   meteofolder=strsplit(meteofile_roots, "/")[[1]][1]
   files=dir(paste(wpath,"/",meteofolder,"/",sep=""),pattern = "meteo")
-  files=files[-grep("old",files)]
+  if(length(grep("old",files))!=0) files=files[-grep("old",files)]
   
   #--- FIRST LOOP--------------
   # reading all input meteo data, skipping .old files
@@ -140,13 +140,13 @@ input_by_variables=function(wpath){
 #wpath <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"
 #wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v008/"
 
-wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/1D/CRYOMON_sim_1D_204_v002"
+wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/1D/CRYOMON_sim_1D_204_v004/"
 all_inputs=input_by_variables(wpath)
-save(all_inputs,file="C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim_1D_204_v002.Rdata")
+save(all_inputs,file="C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim_1D_204_v004.Rdata")
 
-wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/3D/CRYOMON_sim_157_v009/"
-all_inputs=input_by_variables(wpath = wpath)
-save(all_inputs,file="C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim009.Rdata")
+#wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/3D/CRYOMON_sim_157_v009/"
+#all_inputs=input_by_variables(wpath = wpath)
+#save(all_inputs,file="C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim009.Rdata")
 
 #=====================================================================================================
 
@@ -158,8 +158,11 @@ sim_0008=all_inputs
 load("C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim009.Rdata")
 sim_0009=all_inputs
 
-load("C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim_1D_204_v002.Rdata")
-sim_1D_002=all_inputs
+load("C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim_1D_204_v003.Rdata")
+sim_1D_003=all_inputs
+
+load("C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/Inputs_GEOtop_sim_1D_204_v004.Rdata")
+sim_1D_004=all_inputs
 
 #=====================================================================================================
 
@@ -167,8 +170,8 @@ sim_1D_002=all_inputs
 
 # Select simulations to aggregate and plot
 
-simulation=sim_1D_002
-simulation2=sim_0009
+simulation=sim_1D_004
+simulation2=sim_1D_003
 
 mycolors=c("red", "blue","yellow", "green", "orange","violet","lime","grey","black","pink","gold")
 stations=c("red = M4","blue = B2","yellow = B3","green = M3","orange = B1",
@@ -210,6 +213,7 @@ diff_WindDir = hourly_WindDir[1:nrow(hourly_Iprec),1:9] - hourly_WindDir2
 diff_RelHum = hourly_RelHum[1:nrow(hourly_Iprec),1:9] - hourly_RelHum2
 diff_AirT = hourly_AirT[1:nrow(hourly_Iprec),1:9] - hourly_AirT2
 diff_Swglobal = hourly_Swglobal[1:nrow(hourly_Iprec),1:9] - hourly_Swglobal2
+
 
 # plots hourly diff
 dygraph(diff_Iprec)%>% dyRangeSelector()
