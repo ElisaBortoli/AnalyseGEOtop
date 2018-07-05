@@ -15,7 +15,7 @@
 # wpath  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Montacini_elisa/1D/Matsch_P2_Ref_001"
 #wpath  <-  "C:/Users/GBertoldi/OneDrive - Scientific Network South Tyrol/Simulations/Johannes/1D/B2_P2_Giacomo/B2_BeG_012S"
 wpath  <- "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/1D/CRYOMON_sim_1D_204_v004"
-
+wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/3D/CRYOMON_sim_157_v022"
 
 #- Install and import packages and functions ----------------------------------------------------------------------------------------------------------
 
@@ -82,7 +82,7 @@ n_points_available <- as.numeric(length(xpoints))
 # Select the sigle point to plot
 # to add here an interactive choiche
 cat(paste("Number of points available:",n_points_available))
-point=4 # <-- Select the point here ( value = 1, ... , n_point_available) 
+point=1 # <-- Select the point here ( value = 1, ... , n_point_available) 
 out_new <- out[[point]] 
 
 # List the variable to plot
@@ -92,7 +92,7 @@ paste("Variables:",choices)
 #- Plot variables for single point -------------------------------------------------------------------------------------------------------------------------
 
 # --------------------------------------------------
-# Snow plot
+# Snow height plot
 input_variables=c("snow_depth.mm.",                                  # <-- Select variables here ( value = 1, ... , n_point_available)                       
                   "Psnow_over_canopy.mm.",
                   "Prain_over_canopy.mm.")
@@ -103,6 +103,44 @@ myfigure <- dygraph(mydata) %>%
   dyRoller()
 
 myfigure
+
+# --------------------------------------------------
+# Snow water equivalent plot
+input_variables=c("snow_water_equivalent.mm.",                                  # <-- Select variables here ( value = 1, ... , n_point_available)                       
+                  "snow_melted.mm.",
+                  "snow_subl.mm.")
+mydata <- out_new[,input_variables] 
+
+myfigure <- dygraph(mydata) %>%
+  dyRangeSelector() %>%
+  dyRoller()
+
+myfigure
+
+# --------------------------------------------------
+# Snow density plot
+input_variables=c("snow_density.kg.m3.")
+mydata <- out_new[,input_variables] 
+
+myfigure <- dygraph(mydata) %>%
+  dyRangeSelector() %>%
+  dyRoller()
+
+myfigure
+
+# --------------------------------------------------
+# Snow temperature plot
+input_variables=c( "snow_temperature.C.")
+mydata <- out_new[,input_variables] 
+
+myfigure <- dygraph(mydata) %>%
+  
+  
+  dyRangeSelector() %>%
+  dyRoller()
+
+myfigure
+
 
 # --------------------------------------------------
 # Plots and saves one snow plot as  file

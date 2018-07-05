@@ -68,7 +68,7 @@ if(!require("hydroGOF"))
 # }
 
 # to load since it is not installed as a package
-source("C:/Users/GBertoldi/Documents/Git/EURAC-Ecohydro/AnalyseGEOtop/inst/GEOtop_Plot_1D/GEOtop_ReadPointData_Generalized.R")
+#source("C:/Users/GBertoldi/Documents/Git/EURAC-Ecohydro/AnalyseGEOtop/inst/GEOtop_Plot_1D/GEOtop_ReadPointData#_Generalized.R")
 
 #wpath <- "/run/user/1000/gvfs/smb-share:server=sdcalp01.eurac.edu,share=data2/Simulations/Simulation_GEOtop_1_225_ZH/Vinschgau/SimTraining/BrJ/HiResAlp/1D/Montecini_pnt_1_225_B2_007/"
 #wpath <- "/run/user/1000/gvfs/smb-share:server=sdcalp01.eurac.edu,share=data2/Simulations/Simulation_GEOtop_1_225_ZH/Vinschgau/SimTraining/BrJ/MonaLisa/1D/Kaltern/sim006"
@@ -78,10 +78,23 @@ source("C:/Users/GBertoldi/Documents/Git/EURAC-Ecohydro/AnalyseGEOtop/inst/GEOto
 # wpath3 <- NULL
 # wpath4 <- NULL
 
-wpath1  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v001/"
-wpath2  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v002/"
-wpath3  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v003/"
-wpath4  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v004/"
+# for snow cryomon simulations
+#wpath1  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v001/"
+#wpath2  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v002/"
+#wpath3  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v003/"
+#wpath4  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v004/"
+
+# for landslide formetta simulations: GEOtop Formetta Version
+wpath1  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Formetta/Simulazioni_paper_frane/Simulazioni_3D/Muntatschini_Landsl_3D_short/"
+wpath2  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Formetta/Simulazioni_paper_frane/Simulazioni_3D/Muntatschini_Landsl_3D_short_past/"
+wpath3  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Formetta/Simulazioni_paper_frane/Simulazioni_3D/Muntatschini_Landsl_3D_short_for/"
+wpath4  <-  NULL
+
+# for landslide formetta simulations: GEOtop veg last Version
+#wpath1  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Formetta/Simulazioni_paper_frane/Simulazioni_3D/Muntatschini_Landsl_3D_short_geoveg/"
+#wpath2  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Formetta/Simulazioni_paper_frane/Simulazioni_3D/Muntatschini_Landsl_3D_short_past_geoveg/"
+#wpath3  <-  "C:/Users/GBertoldi/Documents/Simulations_local/Formetta/Simulazioni_paper_frane/Simulazioni_3D/Muntatschini_Landsl_3D_short_for_geoveg/"
+#wpath4  <-  NULL
 
 # sim data
 
