@@ -8,6 +8,8 @@ R package for GEOtop simulation analysis including functionality for
 * diagnostic plots on hydrological budget in GEOtop 3d simulation
 * visualisation of Soil Water Retention Curve (van Genuchten model)
 
+This package is based on the R package [geotopbricks](https://github.com/ecor/geotopbricks)
+
 # How to start
 
 First install the package with:
