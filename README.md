@@ -16,13 +16,13 @@ First install the package with:
 
 ```
 $ R
->install.packages("devtools")
->library(devtools)
->install_github("EURAC-Ecohydro/AnalyseGEOtop")
+> install.packages("devtools")
+> library(devtools)
+> install_github("EURAC-Ecohydro/AnalyseGEOtop")
 ```
 
 and then import the library with:
 
 ```
->library(AnalyseGeotop)
+> library(AnalyseGeotop)
 ```
