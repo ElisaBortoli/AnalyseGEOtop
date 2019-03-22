@@ -54,7 +54,7 @@ keywords <- declared.geotop.inpts.keywords(wpath = wpath)$Keyword
 # Import data
 # to add here a user confirmation if you load existing data
 # it does not work any more in the more complete case of soil_info = T
-out <- GEOtop_ReadPointData_Generalized(wpath,soil_info = F,save_rData = F)
+out <- GEOtop_ReadPointData_Generalized(wpath,soil_info = F,save_rData = F) # function using as args the previously declared wpath
 
 # Import points coordinates
 xpoints <- get.geotop.inpts.keyword.value("CoordinatePointX",wpath=wpath,numeric=T)
