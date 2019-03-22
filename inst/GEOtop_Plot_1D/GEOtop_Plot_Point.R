@@ -79,8 +79,8 @@ paste("Variables:",choices)
 # --------------------------------------------------
 # (1) Snow height plot
 input_variables = c("snow_depth.mm.", # <-- Select variables here ( value = 1, ... , n_point_available)                       
-                  "Psnow_over_canopy.mm.",
-                  "Prain_over_canopy.mm.")
+                    "Psnow_over_canopy.mm.",
+                    "Prain_over_canopy.mm.")
 mydata <- out_new[,input_variables] 
 
 myfigure <- dygraph(mydata) %>%

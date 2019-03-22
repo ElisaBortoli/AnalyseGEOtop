@@ -8,10 +8,8 @@
 # Version:      1.0
 #------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#------------------------------------------------------------------------
 # Specify working path where are simulations data
-#wpath <-  "C:/Users/CBrida/Desktop/Simulations_GEOtop/CRYOMON_sim_157_v002/"
-wpath <-  "C:/Users/GBertoldi/Documents/Simulations_local/Snow_Cryomon/CRYOMON_sim_157_v017"
+wpath <- "/home/elisa/Scrivania/MHPC/CRYOMON_sim_157_v017"
 
 #------------------------------------------------------------------------
 # Load libraries
@@ -36,17 +34,14 @@ if(!require("dygraphs"))
 library(geotopbricks)
 library(data.table)
 
+library(ggplot2)
+library(AnalyseGeotop)
+
 #------------------------------------------------------------------------
 # read data from folder wpath
 
-# source("GEOtop_ReadBasinData.R")
-
 # get available keywords
-keywords <- declared.geotop.inpts.keywords(wpath = wpath)$Keyword
-
-# check if basin and discharge outptut files exist
-#BasinOutputFile <- get.geotop.inpts.keyword.value("BasinOutputFile",wpath=wpath,numeric=F)
-#DischargeFile <- get.geotop.inpts.keyword.value("DischargeFile",wpath=wpath,numeric=F)file.exists()
+keywords <- declared.geotop.inpts.keywords(wpath = wpath)$Keyword # open geotop.inpts
 
 basin_data <- get.geotop.inpts.keyword.value(keyword="BasinOutputFile", wpath=wpath,
                                              raster=FALSE,
@@ -54,33 +49,17 @@ basin_data <- get.geotop.inpts.keyword.value(keyword="BasinOutputFile", wpath=wp
                                              formatter ="",
                                              date_field="Date12.DDMMYYYYhhmm.",
                                              tz="Etc/GMT+1")
-
-discharge_data <- get.geotop.inpts.keyword.value(keyword="DischargeFile", wpath=wpath,
-                                             raster=FALSE,
-                                             data.frame=TRUE,
-                                             formatter ="",
-                                             date_field="Date12.DDMMYYYYhhmm.",
-                                             tz="Etc/GMT+1")
-
-#------------------------------------------------------------------------
-# generates daily, monthly, yearly, total averages or accumulated data
-# STILL TO DO
-
-# basin_data_avg_dd
-# basin_data_avg_mm
-# basin_data_avg_yy
-# basin_data_avg_tt
-
-# 
-# basin_data_cc_dd
-# basin_data_cc_mm
-# basin_data_cc_yy
-# basin_data_cc_tt
-
+# The following file is NOT present 
+# discharge_data <- get.geotop.inpts.keyword.value(keyword="DischargeFile", wpath=wpath,
+#                                              raster=FALSE,
+#                                              data.frame=TRUE,
+#                                              formatter ="",
+#                                              date_field="Date12.DDMMYYYYhhmm.",
+#                                              tz="Etc/GMT+1")
 
 ##------------------------------------------------------------------------
 # plot basin data
-if(!is.null(basin_data)){
+#if(!is.null(basin_data)){
   
   # list avaliable variables
   choices = names(basin_data)
@@ -93,7 +72,6 @@ if(!is.null(basin_data)){
   input_variables = c ("Prain_below_canopy.mm.",
                        "Psnow_below_canopy.mm.",
                        "Prain_above_canopy.mm.",
-                       "Prain_above_canopy.mm..1",  
                        "Pnet.mm.")                    
   forplot <- input_variables
   data <- basin_data[,forplot] 
@@ -101,6 +79,15 @@ if(!is.null(basin_data)){
   dygraph(data) %>%
   dyRangeSelector() %>%
   dyRoller()
+
+  p <- ggplot(data = data, mapping = aes(x=as.POSIXct(index(data)), y=Prain_below_canopy.mm.))+
+    geom_line()+
+    geom_line(aes(y=Psnow_below_canopy.mm.), color="blue")+
+    geom_line(aes(y=Prain_above_canopy.mm.), color="red")+
+    geom_line(aes(y=Prain_above_canopy.mm.), color="green")+
+    geom_line(aes(y=Pnet.mm.), color="black")
+  p
+  ggsave(filename=file.path(wpath ,"out","1_precipitation.jpeg"), device = "jpeg") # the folder "out" MUST already be there!
   
   # ============================================================
   # temperature plot at output time step
@@ -113,6 +100,13 @@ if(!is.null(basin_data)){
   dygraph(data) %>%
     dyRangeSelector() %>%
     dyRoller()
+  
+  p <- ggplot(data = data, mapping = aes(x=as.POSIXct(index(data)), y=Tair.C.))+
+    geom_line()+
+    geom_line(aes(y=Tsurface.C.), color="blue")+
+    geom_line(aes(y=Tvegetation.C.), color="red")
+  p
+  ggsave(filename=file.path(wpath ,"out","2_temperature.jpeg"), device = "jpeg") 
   
   # ============================================================
   # evaporation plot at output time step
@@ -192,7 +186,7 @@ if(!is.null(basin_data)){
     dyRoller()
   
   
-}
+#}
 
 
 
