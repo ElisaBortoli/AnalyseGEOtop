@@ -23,8 +23,8 @@ GEOtop_ReadPointData_Generalized <- function(wpath,
     xpoints <- listpoints$xcoord
     ypoints <- listpoints$ycoord
   } else {
-    xpoints <- get.geotop.inpts.keyword.value("CoordinatePointX",wpath=wpath,numeric=T)
-    ypoints <- get.geotop.inpts.keyword.value("CoordinatePointY",wpath=wpath,numeric=T)
+    xpoints <- get.geotop.inpts.keyword.value("CoordinateX",wpath=wpath,numeric=T)
+    ypoints <- get.geotop.inpts.keyword.value("CoordinateY",wpath=wpath,numeric=T)
   }
   
   level <- 1:length(xpoints)
@@ -38,7 +38,7 @@ GEOtop_ReadPointData_Generalized <- function(wpath,
                                                  raster=FALSE,
                                                  data.frame=TRUE,
                                                  level=level[i], 
-                                                 date_field="Date12.DDMMYYYYhhmm.",
+                                                 date_field="Date12[DDMMYYYYhhmm]",
                                                  tz="Etc/GMT+1")
     
     dt <- as.data.table(point_data)
@@ -48,30 +48,30 @@ GEOtop_ReadPointData_Generalized <- function(wpath,
     
     # get variables direct or postprocessed from point data 
     
-    out_df <- 
+    out_df <-
       dt %>%
-      # Evapotranspiration  
-      dplyr::mutate(Evapotranspiration.mm. = Evap_surface.mm. + Trasp_canopy.mm.) %>%
-      # partitioning: 1 means full evaporation - 0 means full transpiration  
-      dplyr::mutate(Evapotranspiration_Partitioning = Evap_surface.mm. / Evapotranspiration.mm.) %>%
-      # precipitation
-      dplyr::mutate(PrainPsnow_over_canopy.mm. = Psnow_over_canopy.mm. + Prain_over_canopy.mm.)  %>%
-      # partitioning: 1 means full rain - 0 means full snow  
-      dplyr::mutate(Precipitation_part_over_canopy = Prain_over_canopy.mm. / PrainPsnow_over_canopy.mm.) %>%
-      # net shortwave energy flux  
-      dplyr::mutate(Net_shortwave_flux_W.m2. = SWin.W.m2. - SWup.W.m2.) %>%
-      # net shortwave energy flux  
-      dplyr::mutate(Net_longwave_flux_W.m2. = LWin.W.m2. - LWup.W.m2.) %>% 
-      # net radiation 
-      dplyr::mutate(Net_radiation_W.m2. = Net_shortwave_flux_W.m2. + Net_longwave_flux_W.m2.) %>%
-      # latent heat flux in air
-      dplyr::mutate(Latent_heat_flux_over_canopy_W.m2. = Canopy_fraction... * (LEg_veg.W.m2. + LEv.W.m2.) + (1-Canopy_fraction...) * LEg_unveg.W.m2.) %>%
-      # sensible heat flux in air
-      dplyr::mutate(Sensible_heat_flux_over_canopy_W.m2. = Canopy_fraction... * (Hg_veg.W.m2. + Hv.W.m2.) + (1-Canopy_fraction...) * Hg_unveg.W.m2.) %>%
-      # energy budget
-      dplyr::mutate(Energy_budget_storage_W.m2. = Net_radiation_W.m2. - Latent_heat_flux_over_canopy_W.m2. - Sensible_heat_flux_over_canopy_W.m2. - Soil_heat_flux.W.m2.) 
-    
-    
+     # Evapotranspiration
+    dplyr::mutate(Evapotranspiration.mm. = Evap_surface.mm. + Trasp_canopy.mm.) %>%
+     # partitioning: 1 means full evaporation - 0 means full transpiration
+     dplyr::mutate(Evapotranspiration_Partitioning = Evap_surface.mm. / Evapotranspiration.mm.) %>%
+     # precipitation
+     dplyr::mutate(PrainPsnow_over_canopy.mm. = Psnow_over_canopy.mm. + Prain_over_canopy.mm.)  %>%
+     # partitioning: 1 means full rain - 0 means full snow
+     dplyr::mutate(Precipitation_part_over_canopy = Prain_over_canopy.mm. / PrainPsnow_over_canopy.mm.) %>%
+     # net shortwave energy flux
+     dplyr::mutate(Net_shortwave_flux_W.m2. = SWin[W/m2] - SWup.W.m2.) %>%
+     # net shortwave energy flux
+     dplyr::mutate(Net_longwave_flux_W.m2. = LWin.W.m2. - LWup.W.m2.) %>%
+     # net radiation
+     dplyr::mutate(Net_radiation_W.m2. = Net_shortwave_flux_W.m2. + Net_longwave_flux_W.m2.) %>%
+     # latent heat flux in air
+     dplyr::mutate(Latent_heat_flux_over_canopy_W.m2. = Canopy_fraction... * (LEg_veg.W.m2. + LEv.W.m2.) + (1-Canopy_fraction...) * LEg_unveg.W.m2.) %>%
+     # sensible heat flux in air
+     dplyr::mutate(Sensible_heat_flux_over_canopy_W.m2. = Canopy_fraction... * (Hg_veg.W.m2. + Hv.W.m2.) + (1-Canopy_fraction...) * Hg_unveg.W.m2.) %>%
+     # energy budget
+     dplyr::mutate(Energy_budget_storage_W.m2. = Net_radiation_W.m2. - Latent_heat_flux_over_canopy_W.m2. - Sensible_heat_flux_over_canopy_W.m2. - Soil_heat_flux.W.m2.)
+
+
 	# get available keywords
     keywords <- declared.geotop.inpts.keywords(wpath = wpath)$Keyword
     

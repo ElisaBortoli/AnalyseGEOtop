@@ -3,7 +3,7 @@
 library(DataBaseAlpEnvEURAC)
 library(AnalyseGeotop)
 library(geotopbricks)
-library(geotopOptim)
+library(geotopOptim2)
 
 args <- commandArgs(TRUE)
 
